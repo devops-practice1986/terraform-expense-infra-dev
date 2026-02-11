@@ -40,3 +40,10 @@ resource "aws_ssm_parameter" "ansible_subnet_ids" {
   # here list to StringList conversion by join
   value = join(",", module.vpc.public_subnet_ids)
 }
+
+resource "aws_ssm_parameter" "database_subnet_group_name" {
+  name = "/${var.project_name}/${var.environment}/database_subnet_group_name"
+  type = "String"
+  # here list to StringList conversion by join
+  value = module.vpc.database_subnet_group_name
+}
