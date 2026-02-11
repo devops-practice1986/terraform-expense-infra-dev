@@ -1,5 +1,6 @@
 module "mysql_sg" {
-  source       = "../../terraform-aws-security-group-3"
+  #source       = "../../terraform-aws-security-group-3"
+  source = "git::https://github.com/devops-practice1986/terraform-aws-security-group-module.git?ref=main"
   vpc_id       = local.vpc_id
   sg_name      = "mysql-sg"
   project_name = var.project_name
@@ -8,7 +9,7 @@ module "mysql_sg" {
 }
 
 module "backend_sg" {
-  source       = "../../terraform-aws-security-group-3"
+  source = "git::https://github.com/devops-practice1986/terraform-aws-security-group-module.git?ref=main"
   vpc_id       = local.vpc_id
   sg_name      = "backend-sg"
   project_name = var.project_name
@@ -17,7 +18,7 @@ module "backend_sg" {
 }
 
 module "frontend_sg" {
-  source       = "../../terraform-aws-security-group-3"
+  source = "git::https://github.com/devops-practice1986/terraform-aws-security-group-module.git?ref=main"
   vpc_id       = local.vpc_id
   sg_name      = "frontend-sg"
   project_name = var.project_name
@@ -27,7 +28,7 @@ module "frontend_sg" {
 # Security group for bastian to connect private ips
 
 module "bastian_sg" {
-  source       = "../../terraform-aws-security-group-3"
+ source = "git::https://github.com/devops-practice1986/terraform-aws-security-group-module.git?ref=main"
   vpc_id       = local.vpc_id
   sg_name      = "bastian-sg"
   project_name = var.project_name
@@ -36,7 +37,7 @@ module "bastian_sg" {
 }
 
 module "ansible_sg" {
-  source       = "../../terraform-aws-security-group-3"
+ source = "git::https://github.com/devops-practice1986/terraform-aws-security-group-module.git?ref=main"
   vpc_id       = local.vpc_id
   sg_name      = "ansible-sg"
   project_name = var.project_name
@@ -51,8 +52,8 @@ resource "aws_security_group_rule" "mysql_backend" {
   from_port                = 3306
   to_port                  = 3306
   protocol                 = "tcp"
-  source_security_group_id = module.backend_sg.id
-  security_group_id        = module.mysql_sg.id
+  source_security_group_id = module.backend_sg.id # this is access to backend
+  security_group_id        = module.mysql_sg.id # this rule will apply to mysql_sg
 
 }
 
