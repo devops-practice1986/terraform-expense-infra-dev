@@ -1,37 +1,35 @@
 module "db" {
   source = "terraform-aws-modules/rds/aws"
 
-  identifier = local.resource_name
+  identifier = "demodb"
 
   engine            = "mysql"
   engine_version    = "8.0"
   instance_class    = "db.t3.micro"
   allocated_storage = 5
 
-  db_name  = "transations"
+  db_name  = "transactions"
   username = "root"
+  manage_master_user_password = true
+  password_wo ="ExpenseApp1"
+
   port     = "3306"
- 
+
   vpc_security_group_ids = [local.mysql_sg_id]
-  skip_final_snapshot = true
-
-
+  skip_final_snapshot = true # when we destroy snopshot will attached to vpc,
+                              # then we cannot delete vpc.
   tags = merge(
     var.common_tags,
-    var.rds_tags,
+    var.rds_tags
   )
-    
-
   # DB subnet group
-  db_subnet_group_name = local.database_subnet_group_name
-  
+  db_subnet_group_name = local.database_subnet_group_name   
   # DB parameter group
   family = "mysql8.0"
 
   # DB option group
   major_engine_version = "8.0"
 
-   
   parameters = [
     {
       name  = "character_set_client"
