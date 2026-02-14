@@ -3,24 +3,18 @@ resource "aws_ssm_parameter" "vpc_id" {
   type  = "String"
   value = module.vpc.vpc_id
 }
-
 resource "aws_ssm_parameter" "public_subnet_ids" {
   name = "/${var.project_name}/${var.environment}/public_subnet_ids"
   type = "StringList"
   # here list to StringList conversion by join
   value = join(",", module.vpc.public_subnet_ids)
 }
-
-
-
 resource "aws_ssm_parameter" "private_subnet_ids" {
   name = "/${var.project_name}/${var.environment}/private_subnet_ids"
   type = "StringList"
   # here list to StringList conversion by join
   value = join(",", module.vpc.private_subnet_ids)
 }
-
-
 resource "aws_ssm_parameter" "database_subnet_ids" {
   name = "/${var.project_name}/${var.environment}/database_subnet_ids"
   type = "StringList"
